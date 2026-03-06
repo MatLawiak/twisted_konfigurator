@@ -13,7 +13,8 @@
 import React, { useState, useRef } from 'react';
 
 // Komponenty wspólne
-import ProgressBar from './components/ProgressBar.jsx';
+import ProgressBar         from './components/ProgressBar.jsx';
+import AnimatedBackground  from './components/AnimatedBackground.jsx';
 
 // Komponenty kroków
 import Step1Start        from './components/steps/Step1Start.jsx';
@@ -164,9 +165,13 @@ export default function App() {
   // ============================================================
   return (
     <div className="konfigurator-app">
+      {/* Ruchome romby – identyfikacja wizualna Twisted Pixel */}
+      <AnimatedBackground />
+
       <div
         className={`konfigurator-container${shaking ? ' shake' : ''}`}
         ref={containerRef}
+        style={{ position: 'relative', zIndex: 1 }}
       >
         {/* Pasek postępu (ukryty na Step 1 i Step 10) */}
         <ProgressBar currentStep={currentStep} />
