@@ -59,6 +59,8 @@ const INITIAL_FORM_DATA = {
   // Krok 7
   maWizualizacje:     null,
   wizualizacjeFiles:  [],   // File[] – wgrane pliki wizualizacji (opcjonalne)
+  autoDaneGov:        false, // bool – add-on automatyczne raportowanie do dane.gov.pl
+  addonDaneGovData:   {},    // object – dane firmy do konfiguracji add-on
 
   // Krok 8
   wybranaStrona: null,

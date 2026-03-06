@@ -2,7 +2,8 @@
  * Krok 9 – Podsumowanie
  * - Screenshot wybranego szablonu (thum.io)
  * - Pełne podsumowanie odpowiedzi
- * - Cena 2200 PLN
+ * - Cena 2200 PLN (base) lub 4500 PLN (z add-on dane.gov.pl)
+ * - Informacja o add-on i ustawie deweloperskiej gdy aktywne
  * - Mock bramki płatności (Przelewy24 / karta / BLIK)
  * - Gwarancja zwrotu pieniędzy
  * - Lista korzyści
@@ -43,6 +44,8 @@ export default function Step9Podsumowanie({ formData, onNext, onBack }) {
   const { services, packageName, packageDesc } = generateRecommendations(formData);
   const [payMethod, setPayMethod]   = useState('przelewy24');
   const [imgError, setImgError]     = useState(false);
+
+  const price = formData.autoDaneGov ? '4 500 PLN' : '2 200 PLN';
 
   const selectedTemplate = TEMPLATE_EXAMPLES.find(t => t.id === formData.wybranaStrona);
 
@@ -205,13 +208,41 @@ export default function Step9Podsumowanie({ formData, onNext, onBack }) {
             </p>
           )}
 
+          {/* Add-on dane.gov.pl */}
+          {formData.autoDaneGov && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              padding: '10px 14px',
+              marginBottom: 12,
+              background: 'var(--tp-orange-light)',
+              border: '1px solid rgba(235,93,28,0.25)',
+              borderRadius: 'var(--radius-sm)',
+            }}>
+              <span style={{ fontSize: 18 }}>🏛️</span>
+              <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13 }}>
+                <strong style={{ color: 'var(--tp-dark)', display: 'block', marginBottom: 2 }}>
+                  Add-on: Automatyczne raportowanie do dane.gov.pl
+                </strong>
+                <span style={{ color: 'var(--tp-gray-mid)' }}>
+                  Codzienne generowanie i publikacja pliku CSV/XML — zgodność z art. 19b ustawy deweloperskiej
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Cena */}
           <div className="price-block">
             <div>
               <div className="price-block-label">Cena wdrożenia</div>
-              <div className="price-block-note">jednorazowa opłata, bez ukrytych kosztów</div>
+              <div className="price-block-note">
+                {formData.autoDaneGov
+                  ? 'pakiet + add-on dane.gov.pl, jednorazowa opłata'
+                  : 'jednorazowa opłata, bez ukrytych kosztów'}
+              </div>
             </div>
-            <div className="price-block-amount">2 200 PLN</div>
+            <div className="price-block-amount">{price}</div>
           </div>
         </div>
 
@@ -298,7 +329,7 @@ export default function Step9Podsumowanie({ formData, onNext, onBack }) {
             onClick={onNext}
             style={{ width: '100%', justifyContent: 'center', marginTop: 4 }}
           >
-            Zamów za 2 200 PLN →
+            Zamów za {price} →
           </button>
         </div>
 
