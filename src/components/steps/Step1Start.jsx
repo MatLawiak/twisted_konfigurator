@@ -37,9 +37,6 @@ export default function Step1Start({ onStart }) {
         <div className="start-feature-tag">
           <span>📋</span> Gotowe podsumowanie
         </div>
-        <div className="start-feature-tag">
-          <span>🆓</span> Bezpłatne
-        </div>
       </div>
 
       {/* Baner: zgodność z ustawą deweloperską */}

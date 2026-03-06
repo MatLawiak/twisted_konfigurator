@@ -240,19 +240,6 @@ export default function Step7Wizualizacje({ formData, onChange, onNext, onBack, 
             </div>
           </div>
 
-          {/* Cena */}
-          <div style={{ textAlign: 'right', flexShrink: 0 }}>
-            <div style={{
-              fontFamily: 'Alata, sans-serif',
-              fontSize: 18,
-              color: formData.autoDaneGov ? 'var(--tp-orange)' : 'var(--tp-dark)',
-            }}>
-              4 500 PLN
-            </div>
-            <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 11, color: 'var(--tp-gray-mid)' }}>
-              łącznie z pakietem
-            </div>
-          </div>
         </button>
 
         {/* Rozwinięcie po włączeniu */}

@@ -146,6 +146,7 @@ export default function App() {
         return (
           <Step9Podsumowanie
             formData={formData}
+            onChange={handleChange}
             onNext={goToPayment}
             onBack={goBack}
             currentStep={currentStep}

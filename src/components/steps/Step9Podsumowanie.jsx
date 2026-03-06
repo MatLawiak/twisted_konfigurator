@@ -40,7 +40,7 @@ const PAYMENT_METHODS = [
   { id: 'blik',       label: 'BLIK',       icon: '📱' },
 ];
 
-export default function Step9Podsumowanie({ formData, onNext, onBack }) {
+export default function Step9Podsumowanie({ formData, onChange, onNext, onBack }) {
   const { services, packageName, packageDesc } = generateRecommendations(formData);
   const [payMethod, setPayMethod]   = useState('przelewy24');
   const [imgError, setImgError]     = useState(false);
@@ -208,29 +208,57 @@ export default function Step9Podsumowanie({ formData, onNext, onBack }) {
             </p>
           )}
 
-          {/* Add-on dane.gov.pl */}
-          {formData.autoDaneGov && (
-            <div style={{
+          {/* Add-on dane.gov.pl – toggle */}
+          <button
+            type="button"
+            onClick={() => onChange('autoDaneGov', !formData.autoDaneGov)}
+            style={{
+              width: '100%',
               display: 'flex',
               alignItems: 'center',
-              gap: 10,
-              padding: '10px 14px',
-              marginBottom: 12,
-              background: 'var(--tp-orange-light)',
-              border: '1px solid rgba(235,93,28,0.25)',
+              gap: 12,
+              padding: '14px 16px',
+              marginBottom: 14,
+              background: formData.autoDaneGov ? 'var(--tp-orange-light)' : 'var(--bg-body)',
+              border: `2px solid ${formData.autoDaneGov ? 'var(--tp-orange)' : 'var(--border)'}`,
               borderRadius: 'var(--radius-sm)',
+              cursor: 'pointer',
+              textAlign: 'left',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            {/* Checkbox wizualny */}
+            <span style={{
+              width: 20,
+              height: 20,
+              minWidth: 20,
+              borderRadius: 4,
+              border: `2px solid ${formData.autoDaneGov ? 'var(--tp-orange)' : 'var(--border)'}`,
+              background: formData.autoDaneGov ? 'var(--tp-orange)' : 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: 11,
+              fontWeight: 700,
+              flexShrink: 0,
+              transition: 'all 0.2s ease',
             }}>
-              <span style={{ fontSize: 18 }}>🏛️</span>
-              <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13 }}>
-                <strong style={{ color: 'var(--tp-dark)', display: 'block', marginBottom: 2 }}>
-                  Add-on: Automatyczne raportowanie do dane.gov.pl
-                </strong>
-                <span style={{ color: 'var(--tp-gray-mid)' }}>
-                  Codzienne generowanie i publikacja pliku CSV/XML — zgodność z art. 19b ustawy deweloperskiej
-                </span>
-              </div>
+              {formData.autoDaneGov ? '✓' : ''}
+            </span>
+            <span style={{ fontSize: 16, flexShrink: 0 }}>🏛️</span>
+            <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontSize: 13 }}>
+              <strong style={{ color: 'var(--tp-dark)', display: 'block', marginBottom: 2 }}>
+                Dodaj automatyczne raportowanie do dane.gov.pl
+              </strong>
+              <span style={{ color: 'var(--tp-gray-mid)' }}>
+                Codzienne generowanie CSV/XML — zgodność z art. 19b ustawy deweloperskiej
+                {formData.autoDaneGov && (
+                  <span style={{ color: 'var(--tp-orange)', fontWeight: 600 }}> · +2 300 PLN</span>
+                )}
+              </span>
             </div>
-          )}
+          </button>
 
           {/* Cena */}
           <div className="price-block">
