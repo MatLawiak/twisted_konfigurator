@@ -43,9 +43,11 @@ const INITIAL_FORM_DATA = {
   adresStrony: '',
 
   // Krok 4
-  maLogo:          null,
-  maIdentyfikacje: null,
-  maMaterialy:     null,
+  maLogo:                  null,
+  logoFile:                null,   // File object – wgrany plik logo (opcjonalne)
+  maIdentyfikacje:         null,
+  identyfikacjaCzesciowo:  [],     // string[] – lista posiadanych elementów (przy "częściowo")
+  maMaterialy:             null,
 
   // Krok 5
   maDomene: null,
@@ -54,7 +56,8 @@ const INITIAL_FORM_DATA = {
   stylStrony: null,
 
   // Krok 7
-  maWizualizacje: null,
+  maWizualizacje:     null,
+  wizualizacjeFiles:  [],   // File[] – wgrane pliki wizualizacji (opcjonalne)
 
   // Krok 8
   wybranaStrona: null,

@@ -1,6 +1,6 @@
 /**
  * Krok 7 – Wizualizacje inwestycji
- * Pytanie o posiadanie wizualizacji architektonicznych 3D / zdjęć.
+ * - "tak" → pole upload plików (opcjonalne)
  */
 import React from 'react';
 import CardOption from '../CardOption.jsx';
@@ -15,8 +15,8 @@ export default function Step7Wizualizacje({ formData, onChange, onNext, onBack, 
       <div className="section-header">
         <h2>Czy posiadasz wizualizacje inwestycji?</h2>
         <p>
-          Wizualizacje 3D, renderingi architektoniczne lub zdjęcia gotowych obiektów
-          znacząco zwiększają skuteczność strony sprzedażowej.
+          Renderingi 3D, zdjęcia architektoniczne lub materiały wideo znacząco
+          podnoszą skuteczność strony sprzedażowej.
         </p>
       </div>
 
@@ -34,26 +34,52 @@ export default function Step7Wizualizacje({ formData, onChange, onNext, onBack, 
         ))}
       </div>
 
-      {/* Informacja kontekstowa */}
+      {/* Upload – gdy posiada wizualizacje */}
+      {formData.maWizualizacje === 'tak' && (
+        <div className="upload-field" style={{ marginTop: 16 }}>
+          <label>
+            <input
+              type="file"
+              accept="image/*,video/*,.pdf,.zip"
+              multiple
+              onChange={e => onChange('wizualizacjeFiles', Array.from(e.target.files))}
+            />
+            <span className="upload-field-icon">🖼️</span>
+            <span className="upload-field-text">Wgraj wizualizacje</span>
+            <span className="upload-field-hint">
+              JPG, PNG, MP4, PDF, ZIP – możesz wybrać wiele plików
+            </span>
+            {formData.wizualizacjeFiles?.length > 0 && (
+              <span className="upload-field-name">
+                ✓ {formData.wizualizacjeFiles.length}{' '}
+                {formData.wizualizacjeFiles.length === 1 ? 'plik' : 'pliki/ów'} wybrano
+              </span>
+            )}
+          </label>
+          <p className="upload-optional-note">Opcjonalne – możesz wgrać później</p>
+        </div>
+      )}
+
       {formData.maWizualizacje === 'nie' && (
-        <div className="conditional-field" style={{ marginTop: 20 }}>
+        <div className="conditional-field" style={{ marginTop: 16 }}>
           <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.6 }}>
             <strong style={{ display: 'block', marginBottom: 4 }}>
-              Nie masz jeszcze wizualizacji? Nic straconego.
+              Nie masz wizualizacji? Możemy je stworzyć.
             </strong>
-            Możemy stworzyć profesjonalne wizualizacje 3D Twojej inwestycji lub pomóc
-            w doborze fotografa architektonicznego.
+            Wykonujemy profesjonalne renderingi 3D i wizualizacje architektoniczne
+            dopasowane do charakteru inwestycji.
           </p>
         </div>
       )}
 
       {formData.maWizualizacje === 'w-trakcie' && (
-        <div className="conditional-field" style={{ marginTop: 20 }}>
+        <div className="conditional-field" style={{ marginTop: 16 }}>
           <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.6 }}>
             <strong style={{ display: 'block', marginBottom: 4 }}>
-              Strona może być gotowa zanim będą wizualizacje.
+              Strona może być gotowa przed wizualizacjami.
             </strong>
-            Wdrożymy stronę z placeholderami i zaktualizujemy ją, gdy wizualizacje będą gotowe.
+            Wdrożymy stronę z placeholderami i zaktualizujemy ją od razu,
+            gdy wizualizacje będą gotowe.
           </p>
         </div>
       )}

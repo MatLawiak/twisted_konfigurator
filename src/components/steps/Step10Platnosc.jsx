@@ -1,7 +1,6 @@
 /**
- * Krok 10 – Gotowe / Potwierdzenie zamówienia
- * Ekran końcowy wyświetlany po kliknięciu CTA z kroku 9.
- * W produkcji: tu podpinamy bramkę płatności (np. Stripe, PayU, Przelewy24).
+ * Krok 10 – Dziękujemy!
+ * Strona pojawi się na hostingu w ciągu 24h.
  */
 import React from 'react';
 
@@ -12,57 +11,58 @@ export default function Step10Platnosc({ formData, onRestart }) {
 
   return (
     <div className="step-content step-done">
-      {/* Ikona sukcesu */}
       <div className="step-done-icon">✓</div>
 
-      <h2>Dziękujemy za konfigurację!</h2>
+      <h2>Dziękujemy za zamówienie!</h2>
 
       <p>
-        Twoje zamówienie dla {nazwa} zostało przyjęte.
-        Skontaktujemy się z Tobą w ciągu <strong>24 godzin</strong>.
+        Zamówienie dla {nazwa} zostało przyjęte.
+        Nasz zespół skontaktuje się z Tobą w ciągu kilku godzin.
       </p>
 
-      {/* Informacja o dalszych krokach */}
       <div className="step-done-info-card">
-        <p>
-          <strong style={{ display: 'block', marginBottom: 12, fontSize: 15 }}>
-            Co się teraz dzieje?
-          </strong>
+        <p style={{ fontFamily: 'IBM Plex Sans', fontWeight: 700, fontSize: 14, marginBottom: 12 }}>
+          Co się teraz dzieje?
         </p>
-        <ul style={{ paddingLeft: 20, color: '#374151', fontSize: 14, lineHeight: 1.8 }}>
-          <li>Nasz specjalista przeanalizuje Twoje odpowiedzi</li>
-          <li>Przygotujemy szczegółową wycenę projektu</li>
-          <li>Skontaktujemy się z Tobą telefonicznie lub mailowo</li>
-          <li>Po akceptacji – strona pojawi się w ciągu 24 godzin na Twojej domenie</li>
+        <ul>
+          <li>Nasz specjalista przegląda Twoje odpowiedzi</li>
+          <li>Przygotowujemy projekt i konfigurację strony</li>
+          <li>Skontaktujemy się telefonicznie lub mailowo</li>
+          <li>Po akceptacji – wdrożenie i uruchomienie strony</li>
         </ul>
       </div>
 
-      {/* Nota o płatności */}
+      {/* 24h obietnica */}
+      <div className="step-done-24h">
+        <span style={{ fontSize: 22 }}>🚀</span>
+        Twoja strona pojawi się na hostingu w ciągu <strong style={{ marginLeft: 4 }}>24 godzin</strong>
+      </div>
+
       <div
         style={{
-          marginTop: 24,
-          padding: '16px 20px',
-          background: 'var(--tp-purple-light)',
+          marginTop: 20,
+          padding: '14px 20px',
+          background: '#f0fdf4',
+          border: '1px solid #bbf7d0',
           borderRadius: 'var(--radius-sm)',
-          maxWidth: 440,
-          margin: '24px auto 0',
+          maxWidth: 460,
+          margin: '20px auto 0',
+          fontFamily: 'IBM Plex Sans, sans-serif',
           fontSize: 13,
-          color: 'var(--tp-purple-dark)',
+          color: '#166534',
           lineHeight: 1.6,
         }}
       >
-        <strong style={{ display: 'block', marginBottom: 4 }}>
-          Bramka płatności
-        </strong>
-        Po akceptacji oferty otrzymasz link do bezpiecznej płatności online (Przelewy24 / karta).
+        <strong style={{ display: 'block', marginBottom: 4 }}>🛡️ Gwarancja zwrotu</strong>
+        Jeśli z jakiegoś powodu zrezygnujesz przed rozpoczęciem prac –
+        zwrócimy pełną kwotę bez pytań.
       </div>
 
-      {/* Restart konfiguratora */}
       <button
         className="btn btn-back"
         onClick={onRestart}
         type="button"
-        style={{ marginTop: 32 }}
+        style={{ marginTop: 36 }}
       >
         ← Zacznij od nowa
       </button>

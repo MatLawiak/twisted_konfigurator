@@ -1,11 +1,66 @@
 /**
- * Krok 8 – Wybór przykładowej strony (szablonu)
- * Galeria kart z przykładowymi realizacjami stron inwestycji.
- * Każda karta zawiera: podgląd kolorystyczny, nazwę, styl i link do podglądu.
+ * Krok 8 – Wybór przykładowej strony inwestycji
+ * Miniaturki generowane przez thum.io (darmowy screenshot API, bez klucza).
+ * Każda karta ma podgląd strony + link do pełnej wersji.
  */
-import React from 'react';
+import React, { useState } from 'react';
 import NavigationButtons from '../NavigationButtons.jsx';
 import { TEMPLATE_EXAMPLES, isStepValid } from '../../data/config.js';
+
+// Generuje URL miniaturki przez thum.io
+function thumbUrl(siteUrl) {
+  return `https://image.thum.io/get/width/600/crop/400/noanimate/${siteUrl}`;
+}
+
+function TemplateCard({ tpl, isSelected, onSelect }) {
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <div
+      className={`template-card${isSelected ? ' selected' : ''}`}
+      onClick={() => onSelect(tpl.id)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={e => e.key === 'Enter' && onSelect(tpl.id)}
+      aria-pressed={isSelected}
+    >
+      <div className="template-thumbnail">
+        {!imgError ? (
+          <img
+            src={thumbUrl(tpl.previewUrl)}
+            alt={`Podgląd strony ${tpl.name}`}
+            onError={() => setImgError(true)}
+            loading="lazy"
+          />
+        ) : (
+          <div
+            className="template-thumbnail-fallback"
+            style={{ background: tpl.bgColor }}
+          >
+            <span>{tpl.emoji}</span>
+          </div>
+        )}
+        <span className="template-thumbnail-label">{tpl.desc}</span>
+      </div>
+
+      <div className="template-info">
+        <div className="template-info-name">{tpl.name}</div>
+        <div className="template-info-desc">{tpl.desc}</div>
+        <a
+          href={tpl.previewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="template-info-link"
+          onClick={e => e.stopPropagation()}
+        >
+          Zobacz pełną stronę ↗
+        </a>
+      </div>
+
+      <div className="template-selected-badge">✓ Wybrany szablon</div>
+    </div>
+  );
+}
 
 export default function Step8Wybor({ formData, onChange, onNext, onBack, currentStep }) {
   const valid = isStepValid(8, formData);
@@ -15,68 +70,27 @@ export default function Step8Wybor({ formData, onChange, onNext, onBack, current
       <div className="section-header">
         <h2>Wybierz przykładową stronę inwestycji</h2>
         <p>
-          Każdy szablon jest już skonfigurowany i gotowy do personalizacji.
-          Kliknij kartę aby wybrać, a następnie przejdź do podglądu.
+          Kliknij kartę aby wybrać szablon. Każda strona dostępna jest do pełnego podglądu —
+          kliknij link pod miniaturką.
         </p>
       </div>
 
       <div className="template-grid">
-        {TEMPLATE_EXAMPLES.map(tpl => {
-          const isSelected = formData.wybranaStrona === tpl.id;
-          return (
-            <div
-              key={tpl.id}
-              className={`template-card${isSelected ? ' selected' : ''}`}
-              onClick={() => onChange('wybranaStrona', tpl.id)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={e => e.key === 'Enter' && onChange('wybranaStrona', tpl.id)}
-              aria-pressed={isSelected}
-            >
-              {/* Miniatura z kolorem tła */}
-              <div
-                className="template-thumbnail"
-                style={{ background: tpl.bgColor }}
-              >
-                <span style={{ fontSize: 36 }}>{tpl.emoji}</span>
-                <span className="template-thumbnail-label">{tpl.desc}</span>
-              </div>
-
-              {/* Informacje */}
-              <div className="template-info">
-                <div className="template-info-name">{tpl.name}</div>
-                <div className="template-info-desc">{tpl.desc}</div>
-                {tpl.previewUrl !== '#' ? (
-                  <a
-                    href={tpl.previewUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="template-info-link"
-                    onClick={e => e.stopPropagation()}
-                  >
-                    Podgląd pełnej wersji ↗
-                  </a>
-                ) : (
-                  <span className="template-info-link" style={{ color: 'var(--tp-gray-400)' }}>
-                    Podgląd wkrótce
-                  </span>
-                )}
-              </div>
-
-              {/* Wybrany badge */}
-              <div className="template-selected-badge">
-                ✓ Wybrany szablon
-              </div>
-            </div>
-          );
-        })}
+        {TEMPLATE_EXAMPLES.map(tpl => (
+          <TemplateCard
+            key={tpl.id}
+            tpl={tpl}
+            isSelected={formData.wybranaStrona === tpl.id}
+            onSelect={id => onChange('wybranaStrona', id)}
+          />
+        ))}
       </div>
 
-      {/* Nota o zgodności z ustawą deweloperską */}
       <div className="template-note">
         <strong>Strony są zgodne z nową ustawą deweloperską.</strong>
-        Szablony są skonfigurowane z integracją danych GOV i automatycznie dostosowują
-        się do obowiązujących regulacji prawnych. Nie musisz martwić się o aktualizacje przepisów.
+        Każdy szablon jest skonfigurowany z integracją danych GOV i automatycznie
+        dostosowuje się do obowiązujących regulacji prawnych.
+        Nie musisz martwić się o aktualizacje przepisów.
       </div>
 
       <NavigationButtons

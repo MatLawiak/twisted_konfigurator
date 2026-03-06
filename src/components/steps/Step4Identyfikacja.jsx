@@ -1,8 +1,10 @@
 /**
  * Krok 4 – Identyfikacja wizualna
- * 3 niezależne pytania: logo, identyfikacja wizualna, materiały sprzedażowe.
+ * - Logo: tak → pole upload (opcjonalne)
+ * - Identyfikacja wizualna: częściowo → lista checkboxów co posiadasz
+ * - Materiały sprzedażowe: tak/nie
  */
-import React from 'react';
+import React, { useState } from 'react';
 import CardOption from '../CardOption.jsx';
 import NavigationButtons from '../NavigationButtons.jsx';
 import {
@@ -12,18 +14,57 @@ import {
   isStepValid,
 } from '../../data/config.js';
 
+const PARTIAL_ITEMS = [
+  'Logo inwestycji',
+  'Paleta kolorów marki',
+  'Typografia (czcionki)',
+  'Szablony graficzne',
+  'Wizytówki',
+  'Materiały drukowane (ulotki, broszury)',
+  'Bannery / reklamy online',
+];
+
+function UploadField({ label, hint, onChange, fileName }) {
+  return (
+    <div className="upload-field">
+      <label>
+        <input
+          type="file"
+          accept="image/*,.pdf,.svg,.ai,.eps,.zip"
+          onChange={e => onChange(e.target.files[0] ?? null)}
+        />
+        <span className="upload-field-icon">📎</span>
+        <span className="upload-field-text">{label}</span>
+        <span className="upload-field-hint">{hint}</span>
+        {fileName && <span className="upload-field-name">✓ {fileName}</span>}
+      </label>
+      <p className="upload-optional-note">Opcjonalne – możesz wgrać później</p>
+    </div>
+  );
+}
+
 export default function Step4Identyfikacja({ formData, onChange, onNext, onBack, currentStep }) {
+  const [partialChecks, setPartialChecks] = useState(formData.identyfikacjaCzesciowo ?? []);
   const valid = isStepValid(4, formData);
+
+  function togglePartial(item) {
+    const next = partialChecks.includes(item)
+      ? partialChecks.filter(i => i !== item)
+      : [...partialChecks, item];
+    setPartialChecks(next);
+    onChange('identyfikacjaCzesciowo', next);
+  }
 
   return (
     <div className="step-content">
-      {/* --- Logo --- */}
+
+      {/* ── Logo ── */}
       <div className="section-header">
         <h2>Czy posiadasz logo inwestycji?</h2>
-        <p>Logo to podstawa identyfikacji wizualnej każdej inwestycji.</p>
+        <p>Logo to wizytówka każdej inwestycji – podstawa identyfikacji.</p>
       </div>
 
-      <div className="card-grid card-grid--2col" style={{ marginBottom: 32 }}>
+      <div className="card-grid card-grid--2col" style={{ marginBottom: 4 }}>
         {LOGO_OPTIONS.map(opt => (
           <CardOption
             key={opt.value}
@@ -36,13 +77,22 @@ export default function Step4Identyfikacja({ formData, onChange, onNext, onBack,
         ))}
       </div>
 
-      {/* --- Identyfikacja wizualna --- */}
-      <div className="section-header">
+      {formData.maLogo === 'tak' && (
+        <UploadField
+          label="Wgraj plik logo"
+          hint="PNG, SVG, PDF, AI, EPS – maks. 20 MB"
+          fileName={formData.logoFile?.name}
+          onChange={file => onChange('logoFile', file)}
+        />
+      )}
+
+      {/* ── Identyfikacja wizualna ── */}
+      <div className="section-header" style={{ marginTop: 32 }}>
         <h2>Czy posiadasz identyfikację wizualną?</h2>
-        <p>Paleta kolorów, typografia, zasady użycia logo.</p>
+        <p>Paleta kolorów, typografia, zasady użycia logo i materiałów.</p>
       </div>
 
-      <div className="card-grid card-grid--1col" style={{ marginBottom: 32 }}>
+      <div className="card-grid card-grid--1col" style={{ marginBottom: 4 }}>
         {IDENTITY_OPTIONS.map(opt => (
           <CardOption
             key={opt.value}
@@ -55,10 +105,26 @@ export default function Step4Identyfikacja({ formData, onChange, onNext, onBack,
         ))}
       </div>
 
-      {/* --- Materiały sprzedażowe --- */}
-      <div className="section-header">
+      {formData.maIdentyfikacje === 'czesciowo' && (
+        <div className="partial-checks">
+          <div className="partial-checks-title">Wskaż co posiadasz:</div>
+          {PARTIAL_ITEMS.map(item => (
+            <label key={item} className="partial-check-item">
+              <input
+                type="checkbox"
+                checked={partialChecks.includes(item)}
+                onChange={() => togglePartial(item)}
+              />
+              <span>{item}</span>
+            </label>
+          ))}
+        </div>
+      )}
+
+      {/* ── Materiały sprzedażowe ── */}
+      <div className="section-header" style={{ marginTop: 32 }}>
         <h2>Czy posiadasz materiały sprzedażowe?</h2>
-        <p>Broszury, karty lokali, prezentacje, bannery.</p>
+        <p>Broszury, karty lokali, prezentacje, bannery reklamowe.</p>
       </div>
 
       <div className="card-grid card-grid--2col" style={{ marginBottom: 8 }}>
